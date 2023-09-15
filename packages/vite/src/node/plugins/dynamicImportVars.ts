@@ -125,19 +125,10 @@ export async function transformDynamicImport(
     ? `, ${JSON.stringify({ ...globParams, import: '*' })}`
     : ''
 
-  let newRawPattern = posix.relative(
-    posix.dirname(importer),
-    await toAbsoluteGlob(rawPattern, root, importer, resolve),
-  )
-
-  if (!relativePathRE.test(newRawPattern)) {
-    newRawPattern = `./${newRawPattern}`
-  }
-
   const exp = `(import.meta.glob(${JSON.stringify(userPattern)}${params}))`
 
   return {
-    rawPattern: newRawPattern,
+    rawPattern,
     pattern: userPattern,
     glob: exp,
   }
